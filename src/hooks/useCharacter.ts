@@ -23,8 +23,6 @@ type HomeWorld = {
 
 export function useCharacter(data: Character | undefined) {
   const [films, setFilms] = useState<Film[]>([]);
-  const [vehicles, setVehicles] = useState<Vehicle[]>([]);
-  const [starships, setStarships] = useState<Starship[]>([]);
   const [homeWorld, setHomeWorld] = useState<HomeWorld>({
     name: '',
     url: '',
@@ -53,50 +51,6 @@ export function useCharacter(data: Character | undefined) {
     }
   }, [data?.films]);
 
-  const getVehicles = useCallback(async () => {
-    try {
-      data?.vehicles.forEach(async (vehicle) => {
-        const response = await fetch(vehicle);
-        const vehicleData = await response.json();
-        setVehicles((prevState) => {
-          if (prevState.includes(vehicleData.name)) return prevState;
-          return [
-            ...prevState,
-            {
-              name: vehicleData.name,
-              url: vehicleData.url,
-            },
-          ];
-        });
-      });
-    } catch {
-    } finally {
-      setIsLoading(false);
-    }
-  }, [data?.vehicles]);
-
-  const getStarships = useCallback(async () => {
-    try {
-      data?.starships.forEach(async (starship) => {
-        const response = await fetch(starship);
-        const starshipData = await response.json();
-
-        setStarships((prevState) => {
-          if (prevState.includes(starshipData.name)) return prevState;
-          return [
-            ...prevState,
-            {
-              name: starshipData.name,
-              url: starshipData.url,
-            },
-          ];
-        });
-      });
-    } catch {
-    } finally {
-      setIsLoading(false);
-    }
-  }, [data?.starships]);
 
   const getHomeWorld = useCallback(async () => {
     try {
@@ -117,13 +71,6 @@ export function useCharacter(data: Character | undefined) {
     getFilms();
   }, [getFilms]);
 
-  useEffect(() => {
-    getVehicles();
-  }, [getVehicles]);
-
-  useEffect(() => {
-    getStarships();
-  }, [getStarships]);
 
   useEffect(() => {
     getHomeWorld();
@@ -131,8 +78,6 @@ export function useCharacter(data: Character | undefined) {
 
   return {
     films,
-    vehicles,
-    starships,
     homeWorld,
     isLoading,
   };
