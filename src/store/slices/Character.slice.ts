@@ -7,7 +7,8 @@ export interface ICharacterFavourite {
 
 const characterSlice = createSlice({
   name: 'character',
-  initialState: <ICharacterFavourite[]>[],
+
+  initialState: <ICharacterFavourite[]>JSON.parse(window.localStorage.getItem('favCharacter') || '[]'),
   reducers: {
     setFavouriteCharacter: (state, { payload }) => {
       const { name, id } = payload;
@@ -19,20 +20,23 @@ const characterSlice = createSlice({
       if (isFavouriteAlready) {
         return state;
       }
-      return [
+      const newState = [
         ...state,
         {
           name,
           id,
         },
       ];
+      window.localStorage.setItem('favCharacter', JSON.stringify(newState))
+      return newState
     },
     removeFavouriteCharacter: (state, { payload }) => {
       const { name, id } = payload;
-
-      return state.filter(
+      const newState = state.filter(
         (character) => character.name !== name || character.id !== id,
       );
+      window.localStorage.setItem('favCharacter', JSON.stringify(newState))
+      return newState
     },
   },
 });

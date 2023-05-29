@@ -6,15 +6,7 @@ type Film = {
   url: string;
 };
 
-type Vehicle = {
-  name: string;
-  url: string;
-};
 
-type Starship = {
-  name: string;
-  url: string;
-};
 
 type HomeWorld = {
   name: string;
